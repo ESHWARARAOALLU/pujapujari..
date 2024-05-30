@@ -1,0 +1,114 @@
+.container-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 150px;
+    /* Background color for the container */
+    padding: 20px;
+
+}
+
+.pandit-details {
+    margin-bottom: 20px;
+    color: #333;
+    /* Text color for Pandit details */
+}
+
+.details-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.details-container p {
+    margin-right: 20px;
+    color: #555;
+    /* Text color for details labels */
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: orange;
+    /* Button background color */
+    color: #fff;
+    /* Button text color */
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    /* Adjust the gap between cards */
+}
+
+.card {
+    background-color: #f8f9fa;
+    /* Card background color */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Card shadow */
+    padding: 20px;
+    width: 300px;
+    /* Adjust the card width as needed */
+}
+
+.pandit-details {
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    /* Adjust margin as needed */
+}
+
+.card-container h1 {
+    margin-top: 40px;
+    /* Add space between the pandit details section and puja request details */
+}
+
+.acceptBtn,
+.denyBtn {
+    background-color: #28a745;
+    /* Accept and deny button background color */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    /* Add space between buttons */
+}
+
+.denyBtn {
+    background-color: #dc3545;
+    /* Deny button background color */
+}
+
+/* Accepted or Rejected Details Section Styles */
+.card-1 {
+    display: inline-block;
+    /* Display elements inline */
+    background-color: #f8f9fa;
+    /* Card background color */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Card shadow */
+    padding: 20px;
+    margin-top: 20px;
+    /* Adjust margin as needed */
+    width: 300px;
+    /* Adjust the card width as needed */
+    margin-left: 130px;
+}
+
+.card-1>div {
+    margin-top: 10px;
+    /* Adjust margin between each paragraph */
+}

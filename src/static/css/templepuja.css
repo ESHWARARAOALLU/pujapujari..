@@ -1,0 +1,16 @@
+    .service-item {
+        transition: transform 0.3s ease; /* Add a smooth transition for the scaling effect */
+    }
+    
+    .service-info {
+        transition: background-color 0.3s ease, color 0.3s ease; /* Add a smooth transition for background color and text color */
+    }
+    
+    .service-item:hover {
+        transform: scale(1.05); /* Scale up by 5% on hover */
+    }
+    
+    .service-item:hover .service-info {
+        background-color: ghostwhite; /* Add your desired background color on hover */
+        color: #343a40; /* Add your desired text color on hover */
+    }

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Puja Path - Aapki Puja, Hamara Wada</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.jpg') }}">
+
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/lightbox/css/lightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+
+
+    <!-- Template Stylesheet -->
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        overflow: auto;
+        animation: gradient 15s ease infinite;
+        background-size: cover;
+        /* Change to cover */
+        background-attachment: fixed;
+        background-image: url("{{ url_for('static', filename='img/lamp.jpg') }}");
+        background-repeat: no-repeat;
+    }
+
+
+    .card-white-bg {
+        background-color: white;
+        /* Set background color to white */
+    }
+
+    /* Keyframes for letter animation */
+    @keyframes animateLetters {
+        from {
+            opacity: 0;
+            transform: translateY(-200px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Apply animation to h4 and h1 elements */
+    .animated-text {
+        animation: animateLetters 2s ease forwards;
+    }
+
+    .service-img {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        /* Fixed height for the container */
+        overflow: hidden;
+        /* Ensures that any overflow content is hidden */
+    }
+
+    .fixed-size-image {
+        width: 100%;
+        /* Ensure the image takes the full width of the container */
+        height: 100%;
+        /* Ensure the image takes the full height of the container */
+        object-fit: cover;
+        /* Ensures the image covers the area without distortion */
+        position: absolute;
+        /* Positioning the image absolutely within the container */
+        top: 0;
+        /* Align the image to the top */
+        left: 0;
+        /* Align the image to the left */
+    }
+</style>
+
+<body>
+    <div class="cursor"></div>
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-secondary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar start -->
+    <div class="container-fluid fixed-top">
+        <div class="topbar bg-secondary d-none d-lg-block">
+            <div class="d-flex justify-content-between">
+                <div class="top-info ps-2">
+                    <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-danger"></i> <a href="#"
+                            class="text-white">{{selected_location}}</a></small>
+                    <small class="me-3"><i class="fas fa-envelope me-2 text-danger"></i><a href="#"
+                            class="text-white">{{email}}</a></small>
+                </div>
+                <div class="top-link pe-2">
+                    <a href="#" class="text-white">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+        <div class="container px-0">
+            <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                <a href="/" class="navbar-brand" style="display: flex; align-items: center;">
+                    <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo"
+                        style="height: 50px; margin-left: -20px;">
+                    <h1 class="text-secondary display-6" style="margin-left: 10px; margin-bottom: -1px;">Pooja aur
+                        Pujaree</h1>
+                </a>
+                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars text-primary"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto">
+                        <a href="/main" class="nav-item nav-link active">Home</a>
+                        <a href="#samagri" class="nav-item nav-link">Puja Samagri</a>
+                        <a href="#puja" class="nav-item nav-link">Puja Services</a>
+                        <a href="/temple" class="nav-item nav-link">Temples</a>
+                        <a href="/testimonial" class="nav-item nav-link">Testimonial</a>
+                        <a href="/contact" class="nav-item nav-link">Contact</a>
+                    </div>
+                    <div class="d-flex m-3 me-0">
+                        <a href="/cart" class="position-relative me-4 my-auto">
+                            <i class="fa fa-shopping-bag fa-2x" style="position: relative;">
+                                <span
+                                    style="position: absolute; top: -8px; right: -10px; background-color: green; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">{{
+                                    n }}</span>
+                            </i>
+                        </a>
+                        <a href="/checkout" class="my-auto me-4">
+                            <i class="fas fa-credit-card fa-2x"></i>
+                        </a>
+                        <a href="/profile" class="my-auto">
+                            <i class="fas fa-user-alt fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </nav>
+        </div>
+    </div>
+    <marquee>
+        {{msg}}
+    </marquee>
+
+
+    <!-- Hero Start -->
+    <div class="container-fluid py-5 mb-5 hero-header">
+        <div class="container py-5">
+            <div class="row g-5 align-items-center">
+                <div class="col-md-12 col-lg-7">
+                    <div class="container-display">
+                        <h4 class="mb-3 display-5 text-info animated-text">100% Suddh Puja</h4>
+                        <h1 class="mb-5 display-3 text-secondary animated-text">Book a puja ceremony across India</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+
+    <!-- USP -->
+
+    <style>
+        .usp-section {
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-top: -190px;
+            border-radius: 8px;
+        }
+
+        .usp-section h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .usp-section p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+
+        .usp-cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .usp-card {
+            background: #e8dac0;
+            color: maroon;
+            padding: 20px;
+            height: 140px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            opacity: 0;
+            /* Start hidden for animation */
+        }
+
+        .usp-card:nth-child(odd):hover {
+            transform: translateX(-10px);
+        }
+
+        .usp-card:nth-child(even):hover {
+            transform: translateX(10px);
+        }
+
+        .usp-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .usp-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .usp-card p {
+            font-size: 1em;
+        }
+
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes growIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .usp-card:nth-child(1) {
+            animation: slideInFromLeft 3s forwards;
+        }
+
+        .usp-card:nth-child(2) {
+            animation: growIn 3s forwards;
+        }
+
+        .usp-card:nth-child(3) {
+            animation: slideInFromRight 3s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .animated-text-1 {
+            animation: fadeIn 2s ease-in-out;
+        }
+    </style>
+
+    <div class="usp-section">
+        <h1 style="font-weight: bold; font-size: 2.5em;color: skyblue;" class="animated-text-1">Why Choose Us?</h1>
+        <p class="animated-text-1">Discover the unique benefits of our product/service that set us apart from the
+            competition.</p>
+        <div class="usp-cards">
+            <div class="usp-card">
+                <h3>High Quality</h3>
+                <p>We use the finest materials to ensure the best quality in every product.</p>
+            </div>
+            <div class="usp-card">
+                <h3>Affordable Prices</h3>
+                <p>Get the best value for your money with our competitive pricing.</p>
+            </div>
+            <div class="usp-card">
+                <h3>Exceptional Support</h3>
+                <p>Our dedicated support team is here to help you 24/7.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- /USP -->
+    <!-- Puja Shop Start-->
+    <div class="container-fluid puja py-5" id="samagri">
+        <div class="container py-5">
+            <h1 class="mb-5 text-center" style="color: white;">PUJA SAMAGRI</h1>
+            <div class="tab-class text-center">
+                <div class="tab-content">
+                    <div class="tab-pane fade show p-0 active">
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+                                <div class="row g-4">
+                                    {% set unique_items = [] %}
+                                    {% for item in l %}
+                                    {% if item not in unique_items %}
+                                    {% set _ = unique_items.append(item) %}
+                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                        <div class="rounded position-relative service card-white-bg" style="height: 400px; overflow: hidden;">
+                                            <!-- Added class "card-white-bg" -->
+                                            <div class="service-img">
+                                                <img src="/viewImage/{{ item[4] }}" alt="{{ item[1] }}"
+                                                    class="img-fluid w-100 rounded-top" style="max-height: 200px;" style="height: calc(100% - 200px); overflow: auto;">
+                                            </div>
+
+                                            <div class="p-4 border border-primary border-top-0 rounded-bottom">
+                                                <h4>{{ item[1] }}</h4>
+                                                <p>{{ item[2] }}</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">₹ {{ item[3] }}</p>
+                                                    <a href="/add_to_cart/{{item[0]}}"
+                                                        class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart-btn">
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
+                                                        cart
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Puja Shop End -->
+
+    <!-- Banner -->
+
+    <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
+        <img src="/viewImage/{{ selected_banner}}" alt="banner" class="animated-image">
+    </div>
+
+    <style>
+        .animated-image {
+            height: 100px;
+            width: 100%;
+            max-width: 1500px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .animated-image:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .animated-image {
+                height: auto;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .animated-image {
+                height: auto;
+                width: 100%;
+            }
+        }
+
+        .animated-image {
+            animation: scale-up 0.5s ease-in-out;
+        }
+
+        @keyframes scale-up {
+            0% {
+                transform: scale(0.95);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+
+
+    <div class="container-fluid py-5" id="puja">
+        <div class="container py-5">
+            <h1 class="mb-5 text-center" style="color: white;">PUJA SERVICES AT HOME</h1>
+            <div class="tab-class text-center">
+                <div class="tab-content">
+                    <div class="tab-pane fade show p-0 active ">
+                        <div class="row g-4" id="pujaItems">
+                            {% for i in l1 %}
+                            <div class="col-md-6 col-lg-4 col-xl-3">
+                                <div class="rounded position-relative service card-white-bg "style="height: 400px; overflow: hidden;">
+                                    <!-- Added class "card-white-bg" -->
+                                    <div class="service-img">
+                                        <img src="/viewImage/{{ i[4] }}" alt="{{ i[1] }}"
+                                            class="img-fluid w-100 rounded-top">
+                                    </div>
+                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom" style="height: calc(100% - 200px); overflow: auto;">
+                                        <h4>{{i[1]}}</h4>
+                                        <p>{{i[2]}}</p>
+                                        <div class="d-flex justify-content-between flex-lg-wrap">
+                                            <p class="text-dark fs-5 fw-bold mb-0">₹ {{i[3]}}</p>
+                                            <!-- Button trigger modal -->
+                                            <button type="button"
+                                                class="btn border border-secondary rounded-circle px-3 text-primary"
+                                                data-toggle="modal" data-target="#cartPopup{{i[0]}}">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cart Modal -->
+                            <div class="modal fade" id="cartPopup{{i[0]}}" tabindex="-1" role="dialog"
+                                aria-labelledby="cartPopupLabel{{i[0]}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cartPopupLabel{{i[0]}}">Add to Cart</h5>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="cartForm{{i[0]}}" action="/addservices/{{i[0]}}" method="POST">
+                                                <label for="deliveryDate{{i[0]}}">Select Date:</label>
+                                                <input type="date" id="deliveryDate{{i[0]}}" class="form-control mb-3"
+                                                    name="date" min="">
+                                                <label for="deliveryTime{{i[0]}}">Select Time:</label>
+                                                <input type="time" id="deliveryTime{{i[0]}}" class="form-control mb-3"
+                                                    name="time" required>
+
+                                                <script>
+                                                    var today = new Date().toISOString().split("T")[0];
+                                                    document.getElementById('deliveryDate{{i[0]}}').setAttribute('min', today);
+                                                    console.log(today)
+                                                </script>
+
+
+                                                <label for="locationSelect{{i[0]}}">Select Location:</label>
+
+                                                <select class="form-control mb-3" id="locationSelect{{i[0]}}"
+                                                    name="location">
+                                                    <option value="">Select Location</option>
+                                                    {% for j in pList %}
+                                                    <option value="{{j[0]}}-{{j[1]}}">{{j[0]}}-{{j[1]}}</option>
+                                                    {% endfor %}
+                                                    {% for k in apandit %}
+                                                    <option value="{{k[1]}}-{{k[3]}}">{{k[1]}}-{{k[3]}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--puja list end-->
+
+
+  
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="customPopup" tabindex="-1" role="dialog" aria-labelledby="customPopupLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customPopupLabel">Go to temple section for booking puja at temple</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="redirectToTemple()">Go to Temple</button>
+                    <!-- Add data-dismiss="modal" to close the modal -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCustomPopup(itemId) {
+            $('#customPopup').modal('show');
+        }
+
+        function redirectToTemple() {
+            window.location.href = "/temple";
+        }
+    </script>
+
+
+
+
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <!-- Fact Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="bg-light p-5 rounded">
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="counter bg-white rounded p-5" style="position: relative;">
+                            <i class="fa fa-users text-secondary"></i>
+                            <h4 style="font-size: 18px;">satisfied customers</h4>
+                            <h1 id="satisfied-customers" style="font-size: 40px; margin: 10px 0;">0</h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="counter bg-white rounded p-5" style="position: relative;">
+                            <i class="fa fa-users text-secondary"></i>
+                            <h4 style="font-size: 18px;">quality of service</h4>
+                            <h1 id="quality-of-service" style="font-size: 40px; margin: 10px 0;">0</h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="counter bg-white rounded p-5" style="position: relative;">
+                            <i class="fa fa-users text-secondary"></i>
+                            <h4 style="font-size: 18px;">quality certificates</h4>
+                            <h1 id="quality-certificates" style="font-size: 40px; margin: 10px 0;">0
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="counter bg-white rounded p-5" style="position: relative;">
+                            <i class="fa fa-users text-secondary"></i>
+                            <h4 style="font-size: 18px;">Available Products</h4>
+                            <h1 id="available-products" style="font-size: 40px; margin: 10px 0;">0</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to increment numbers from 0 to a fixed position
+        function incrementNumber(targetElementId, endValue, duration) {
+            let start = 0;
+            let increment = endValue / (duration * 4000 / 60); // Calculate increment for 60 frames per second
+            let current = 0;
+            let element = document.getElementById(targetElementId);
+            let timer = setInterval(() => {
+                current += increment;
+                if (current >= endValue) {
+                    clearInterval(timer);
+                    current = endValue;
+                }
+                element.textContent = Math.round(current);
+            }, 1000 / 60); // Update every 60 frames per second for smooth animation
+        }
+
+        // Call the incrementNumber function for each counter
+        incrementNumber('satisfied-customers', 1963, 4); // Change 1963 to the desired final value and 4 to the duration in seconds
+        incrementNumber('quality-of-service', 99, 4); // Change 99 to the desired final value and 4 to the duration in seconds
+        incrementNumber('quality-certificates', 33, 4); // Change 33 to the desired final value and 4 to the duration in seconds
+        incrementNumber('available-products', 789, 4); // Change 789 to the desired final value and 4 to the duration in seconds
+    </script>
+
+
+
+    <!-- Testimonial Start -->
+    <div class="container-fluid testimonial py-5">
+        <div class="container py-5">
+            <div class="testimonial-header text-center">
+                <h4 class="text-primary">Our Testimonial</h4>
+                <h1 class="display-5 mb-5 text-white" color="white">Our Clients Saying!</h1>
+            </div>
+            <div class="owl-carousel testimonial-carousel">
+                <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                    <div class="position-relative">
+                        <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
+                            style="bottom: 30px; right: 0;"></i>
+                        <div class="mb-4 pb-4 border-bottom border-secondary">
+                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing Ipsum has
+                                been the
+                                industry's standard dummy text ever since the 1500s,
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <div class="bg-secondary rounded">
+                                <img src="{{ url_for('static', filename='img/testimonial3.jpg') }}"
+                                    class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                            </div>
+                            <div class="ms-4 d-block">
+                                <h4 class="text-dark">Client Name</h4>
+                                <p class="m-0 pb-3">Profession</p>
+                                <div class="d-flex pe-5">
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                    <div class="position-relative">
+                        <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
+                            style="bottom: 30px; right: 0;"></i>
+                        <div class="mb-4 pb-4 border-bottom border-secondary">
+                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing Ipsum has
+                                been the
+                                industry's standard dummy text ever since the 1500s,
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <div class="bg-secondary rounded">
+                                <img src="{{ url_for('static', filename='img/testimonial1.jpg') }}"
+                                    class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+
+                            </div>
+                            <div class="ms-4 d-block">
+                                <h4 class="text-dark">Client Name</h4>
+                                <p class="m-0 pb-3">Profession</p>
+                                <div class="d-flex pe-5">
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                    <div class="position-relative">
+                        <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
+                            style="bottom: 30px; right: 0;"></i>
+                        <div class="mb-4 pb-4 border-bottom border-secondary">
+                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing Ipsum has
+                                been the
+                                industry's standard dummy text ever since the 1500s,
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <div class="bg-secondary rounded">
+                                <img src="{{ url_for('static', filename='img/testimonial2.jpg') }}"
+                                    class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                            </div>
+                            <div class="ms-4 d-block">
+                                <h4 class="text-dark">Client Name</h4>
+                                <p class="m-0 pb-3">Profession</p>
+                                <div class="d-flex pe-5">
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tastimonial End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+        <div class="container py-5">
+            <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(234, 241, 8, 0.923);">
+                <div class="row g-4">
+                    <div class="col-lg-3">
+                        <a href="#">
+                            <h1 class="text-success mb-0">Pooja aur Pujaree</h1>
+                            <p class="text-secondary mb-0">Aapki Pooja, Hamara Wada</p>
+                        </a>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="position-relative mx-auto">
+                            <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number"
+                                placeholder="Your Email">
+                            <button type="submit"
+                                class="btn btn-secondary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white"
+                                style="top: 0; right: 0;">Subscribe Now</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="d-flex justify-content-end pt-3">
+                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                    class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                    class="fab fa-youtube"></i></a>
+                            <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-item">
+                        <h4 class="text-light mb-3">Why People Like Us!</h4>
+                        <p class="mb-4">We provide personalized and dedicated services for all your
+                            pooja needs,
+                            ensuring a seamless and spiritual experience.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="d-flex flex-column text-start footer-item">
+                        <h4 class="text-light mb-3">Shop Info</h4>
+                        <a class="btn-link" href="">About Us</a>
+                        <a class="btn-link" href="">Contact Us</a>
+                        <a class="btn-link" href="">Privacy Policy</a>
+                        <a class="btn-link" href="">Terms & Conditions</a>
+                        <a class="btn-link" href="">Return Policy</a>
+                        <a class="btn-link" href="">FAQs & Help</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="d-flex flex-column text-start footer-item">
+                        <h4 class="text-light mb-3">Account</h4>
+                        <a class="btn-link" href="">My Account</a>
+                        <a class="btn-link" href="">Shop Details</a>
+                        <a class="btn-link" href="">Shopping Cart</a>
+                        <a class="btn-link" href="">Order History</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-item">
+                        <h4 class="text-light mb-3">Contact</h4>
+                        <p>{{selected_location}}</p>
+                        <p>Email: {{mail}}</p>
+                        <p>Phone: {{num}}</p>
+                        <p>Payment Accepted</p>
+                        <img src="{{ url_for('static', filename='img/payment.png') }}" class="img-fluid" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Copyright Start -->
+    <div class="container-fluid copyright bg-dark py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Pooja aur
+                            Pujaree</a>,
+                        All right reserved.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-success border-3 border-success rounded-circle back-to-top"
+        style="position: fixed; bottom: 10px; right: 22px; z-index: 1000;">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+
+    <!-- chat bot  -->
+    <!-- <button class="chatbot-toggler">
+        <span class="material-symbols-rounded">CHAT</span>
+        <span class="material-symbols-outlined">X</span>
+    </button>
+    <div class="chatbot">
+        <header>
+            <h2>Chatbot</h2>
+            <span class="close-btn material-symbols-outlined">X</span>
+        </header>
+        <ul class="chatbox">
+            <li class="chat incoming">
+                <span class="material-symbols-rounded" style="font-size: 24px; color: blue;">💬</span>
+                <p>Hi there 👋<br>How can I help you today?<br>
+                    Please leave your contact number and our team will reach out to you shortly</p>
+            </li>
+
+        </ul>
+        <div class="chat-input">
+            <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+            <span id="send-btn" class="material-symbols-rounded">send</span>
+        </div>
+        <button class="end-chat-btn"
+            style="position: absolute; bottom: 10px; right: 20px; display: none; background-color: gold; color: black; border: none; padding: 10px 20px; border-radius: 5px;">End
+            Chat</button>
+
+    </div> -->
+    <!-- chat bot end  -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/lightbox/js/lightbox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+
+
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+</body>
+
+</html>

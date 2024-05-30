@@ -1,0 +1,184 @@
+ /* Payment Section */
+ .card {
+    margin-top: 200px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-top {
+    padding: 10px 0;
+    background-color: #f8f9fa;
+}
+
+.card-top a {
+    text-decoration: none;
+    color: #000;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.upper {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+#payment {
+    margin-left: auto;
+    font-size: 18px;
+}
+
+.left {
+    padding: 20px;
+}
+
+.icons img {
+    width: 40px;
+    margin-right: 10px;
+    margin-top: -10px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+span {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.row {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.row .col-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+label[for="save_card"] {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.align-left {
+    vertical-align: middle;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    margin-bottom: 10px;
+    /* Added margin-bottom to create space between input fields */
+    box-sizing: border-box;
+}
+
+#save_card {
+    margin-right: 5px;
+}
+
+.right {
+    padding: 20px;
+}
+
+/* Order Summary Styles */
+.order {
+    background-color: white;
+    border: 1px solid grey;
+    /* Add border property */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    /* Added margin bottom for spacing */
+    margin-left: 30px;
+    width: 740px;
+}
+
+
+.header {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.item {
+    margin-bottom: 20px;
+}
+
+.item img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.lower {
+    margin-top: 20px;
+}
+
+.btn {
+    background-color: orange;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.align-self-center {
+    align-self: center !important;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+    font-size: 20px;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 99;
+}
+
+.back-to-top:hover {
+    background-color: #218838;
+}

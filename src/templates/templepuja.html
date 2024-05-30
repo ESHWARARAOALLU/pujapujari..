@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Puja Path - Aapki Puja, Hamara Wada</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.jpg') }}">
+
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+        rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Include Bootstrap JS -->
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ url_for('static', filename='lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Main Stylesheet -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/templepuja.css') }}" rel="stylesheet">
+</head>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        overflow: auto;
+        background-size: cover;
+        background-image: url("{{ url_for('static', filename='img/vinayaka.jpg') }}");
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        margin-top: 130px;
+    }
+</style>
+
+<body>
+    <div class="cursor"></div>
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-secondary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    <!-- Navbar start -->
+    <div class="container-fluid fixed-top">
+        <div class="topbar bg-secondary d-none d-lg-block">
+            <div class="d-flex justify-content-between">
+                <div class="top-info ps-2">
+                    <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-danger"></i> <a href="#"
+                        class="text-white">{{selected_location}}</a></small>
+                <small class="me-3"><i class="fas fa-envelope me-2 text-danger"></i><a href="#"
+                        class="text-white">{{email}}</a></small>
+                </div>
+                <div class="top-link pe-2">
+                    <a href="#" class="text-white">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+        <div class="container px-0">
+            <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                <a href="/" class="navbar-brand" style="display: flex; align-items: center;">
+                    <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo"
+                        style="height: 50px; margin-left: -10px;">
+                    <h1 class="text-secondary display-6" style="margin-left: 10px; margin-bottom: -1px;">Pooja aur
+                        Pujaree</h1>
+                </a>
+                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars text-primary"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto">
+                        <a href="/main" class="nav-item nav-link active">Home</a>
+                        <a href="#samagri" class="nav-item nav-link">Puja Samagri</a>
+                        <a href="#puja" class="nav-item nav-link">Puja Services</a>
+                        <a href="/temple" class="nav-item nav-link">Temples</a>
+                        <a href="/testimonial" class="nav-item nav-link">Testimonial</a>
+                        <a href="/contact" class="nav-item nav-link">Contact</a>
+                    </div>
+                    <div class="d-flex m-3 me-0">
+                        <a href="/cart" class="position-relative me-4 my-auto">
+                            <i class="fa fa-shopping-bag fa-2x" style="position: relative;">
+                                <span
+                                    style="position: absolute; top: -8px; right: -10px; background-color: green; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">{{
+                                    n }}</span>
+                            </i>
+                        </a>
+                        <a href="/checkout" class="my-auto me-4">
+                            <i class="fas fa-credit-card fa-2x"></i>
+                        </a>
+                        <a href="/profile" class="my-auto">
+                            <i class="fas fa-user-alt fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </nav>
+        </div>
+    </div>
+    <marquee>
+        {{msg}}
+    </marquee>
+
+    <!-- Modal Search Start -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center">
+                    <div class="input-group w-75 mx-auto d-flex">
+                        <input type="search" class="form-control p-3" placeholder="keywords"
+                            aria-describedby="search-icon-1">
+                        <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Search End -->
+    <div class="container py-5" id="puja">
+        <h1 class="mb-5 text-center" style="color: white;">Puja Services in our Temple</h1>
+        <div class="tab-class text-center">
+            <div class="tab-content">
+                <div class="tab-pane fade show p-0 active">
+                    <div class="row g-4" id="pujaItems">
+                        {% for i in pujas %}
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="rounded position-relative service-item" style="background-color: white;height: 400px; overflow: hidden;">
+                                <div class="service-img">
+                                    <img src="/viewImage/{{ i['puja_image'] }}" alt="{{ i['puja_name'] }}"
+                                        class="img-fluid w-100 rounded-top" style="max-height: 200px;" style="height: calc(100% - 200px); overflow: auto;">
+                                </div>
+                                <!-- Rest of your content -->
+                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <h4>{{ i['p_name'] }}</h4>
+                                    <p>{{ i['description'] }}</p>
+                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                        <p class="text-dark fs-5 fw-bold mb-0">₹ {{ i['price'] }}</p>
+    
+                                        <!-- Button trigger modal -->
+                                        <button type="button"
+                                            class="btn border border-secondary rounded-circle px-3 text-primary"
+                                            data-toggle="modal" data-target="#cartPopup{{ i['_id'] }}">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </button>
+    
+                                        <button type="button"
+                                            class="btn border border-secondary rounded-circle px-3 text-primary"
+                                            data-toggle="modal" data-target="#videoChatPopup{{ i['_id'] }}">
+                                            <i class="fa fa-video"></i>
+                                        </button>
+    
+                                        <button type="button"
+                                            class="btn border border-secondary rounded-circle px-3 text-primary"
+                                            data-toggle="modal" data-target="#orderPrasadamPopup{{ i['_id'] }}">
+                                            <i class="fa fa-utensils"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Order Prasadam Modal -->
+                        <div class="modal fade" id="orderPrasadamPopup{{ i['_id'] }}" tabindex="-1" role="dialog"
+                            aria-labelledby="orderPrasadamPopupLabel{{ i['_id'] }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="orderPrasadamPopupLabel{{ i['_id'] }}">Prasadam</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="cartForm1{{ i['_id'] }}" action="/addprasadam/{{ i['_id'] }}"
+                                            method="POST">
+                                            <label for="prasadamSelect{{ i['_id'] }}">Select Prasadam:</label>
+                                            <select id="prasadamSelect{{ i['_id'] }}" class="form-control" name="name"
+                                                required>
+                                                <option value="">-- Select Prasadam --</option>
+                                                {% for j in unique_prasadam_list %}
+                                                <option value="{{ j }}">{{ j }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <br>
+                                            <label for="quantityInput{{ i['_id'] }}">Quantity:</label>
+                                            <input type="number" id="quantityInput{{ i['_id'] }}" class="form-control"
+                                                placeholder="Enter Quantity" name="qty" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-secondary">Ok</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Cart Modal -->
+                        <div class="modal fade" id="cartPopup{{ i['_id'] }}" tabindex="-1" role="dialog"
+                            aria-labelledby="cartPopupLabel{{ i['_id'] }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="cartPopupLabel{{ i['_id'] }}">Add to Cart</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="cartForm{{ i['_id'] }}"
+                                            action="/addTService/{{ i['_id'] }}/{{ i['p_name'] }}" method="POST">
+                                            <div class="form-group">
+                                                <label for="deliveryDate{{ i['_id'] }}">Select Date:</label>
+                                                <input type="date" id="deliveryDate{{ i['_id'] }}"
+                                                    class="form-control mb-3" name="date" min="" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="deliveryTime{{ i['_id'] }}">Select Time:</label>
+                                                <input type="time" id="deliveryTime{{ i['_id'] }}"
+                                                    class="form-control mb-3" name="time" required>
+                                            </div>
+                                            <script>
+                                                var today = new Date().toISOString().split("T")[0];
+                                                document.getElementById("deliveryDate{{ i['_id'] }}").setAttribute('min', today);
+                                                console.log(today);
+                                            </script>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        function submitQuantity(formId) {
+            document.getElementById('cartForm' + formId).submit();
+        }
+        </script>
+    <br><br><br><br>
+    <!--Temples list end-->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+        <div class="container py-5">
+            <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(234, 241, 8, 0.923) ;">
+                <div class="row g-4">
+                    <div class="col-lg-3">
+                        <a href="#">
+                            <h1 class="text-success mb-0">PujaPath</h1>
+                            <p class="text-secondary mb-0">Aapki Puja, Hamara Wada</p>
+                        </a>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="position-relative mx-auto">
+                            <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number"
+                                placeholder="Your Email">
+                            <button type="submit"
+                                class="btn btn-secondary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white"
+                                style="top: 0; right: 0;">Subscribe Now</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="d-flex justify-content-end pt-3">
+                            <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                    class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                    class="fab fa-youtube"></i></a>
+                            <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-item">
+                        <h4 class="text-light mb-3">Why People Like us!</h4>
+                        <p class="mb-4">typesetting, remaining essentially unchanged. It was
+                            popularised in the 1960s with the like Aldus PageMaker including of
+                            Lorem Ipsum.</p>
+                        <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-secondary">Read
+                            More</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="d-flex flex-column text-start footer-item">
+                        <h4 class="text-light mb-3">Shop Info</h4>
+                        <a class="btn-link" href="">About Us</a>
+                        <a class="btn-link" href="">Contact Us</a>
+                        <a class="btn-link" href="">Privacy Policy</a>
+                        <a class="btn-link" href="">Terms & Condition</a>
+                        <a class="btn-link" href="">Return Policy</a>
+                        <a class="btn-link" href="">FAQs & Help</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="d-flex flex-column text-start footer-item">
+                        <h4 class="text-light mb-3">Account</h4>
+                        <a class="btn-link" href="">My Account</a>
+                        <a class="btn-link" href="">Shop details</a>
+                        <a class="btn-link" href="">Shopping Cart</a>
+                        <a class="btn-link" href="">Order History</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-item">
+                        <h4 class="text-light mb-3">Contact</h4>
+                        <p>Address: 1429 Netus Rd, NY 48247</p>
+                        <p>Email: Example@gmail.com</p>
+                        <p>Phone: +0123 4567 8910</p>
+                        <p>Payment Accepted</p>
+                        <img src="{{ url_for('static', filename='img/payment.png') }}" class="img-fluid" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Copyright Start -->
+    <div class="container-fluid copyright bg-dark py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Puja Path</a>,
+                        All right reserved.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+    <!-- chat bot  -->
+    <!-- <button class="chatbot-toggler">
+        <span class="material-symbols-rounded">BOT</span>
+        <span class="material-symbols-outlined">X</span>
+    </button>
+    <div class="chatbot">
+        <header>
+            <h2>Chatbot</h2>
+            <span class="close-btn material-symbols-outlined">X</span>
+        </header>
+        <ul class="chatbox">
+            <li class="chat incoming">
+                <span class="material-symbols-rounded" style="font-size: 24px; color: blue;">💬</span>
+                <p>Hi there 👋<br>How can I help you today?</p>
+            </li>
+        </ul>
+        <div class="chat-input">
+            <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+            <span id="send-btn" class="material-symbols-rounded">send</span>
+        </div>
+        <button class="end-chat-btn"
+            style="position: absolute; bottom: 10px; right: 20px; display: none; background-color: gold; color: black; border: none; padding: 10px 20px; border-radius: 5px;">End
+            Chat</button>
+
+    </div> -->
+    <!-- chat bot end  -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/lightbox/js/lightbox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/templepuja.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </script>
+
+</body>
+
+</html>

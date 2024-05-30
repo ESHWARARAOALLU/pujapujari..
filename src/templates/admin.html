@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Puja Path - Aapki Puja, Hamara Wada</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.jpg') }}">
+
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/lightbox/css/lightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Template Stylesheet -->
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<style>
+    .category-buttons {
+        display: flex;
+        margin-top: 220px;
+        /* Adjust the top margin as needed */
+    }
+
+    .category-btn {
+        background-color: orange;
+        /* Red */
+        color: #fff;
+        /* White text */
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 20px;
+        /* Add margin between the buttons */
+
+    }
+
+    .category-btn:hover {
+        background-color: #c92626;
+        /* Darker red on hover */
+    }
+
+    .category-content {
+        display: none;
+        margin-bottom: 20px;
+    }
+
+    .category-title {
+        color: #333;
+        /* Dark grey */
+        margin-bottom: 10px;
+    }
+
+    .category-buttons {
+        display: flex;
+        justify-content: center;
+        /* Centering the buttons */
+        margin-bottom: 20px;
+    }
+
+
+
+    .category-btn:hover {
+        background-color: #c92626;
+        /* Darker red on hover */
+    }
+
+    .category-content {
+        display: none;
+        margin-bottom: 20px;
+        text-align: center;
+        /* Centering the content */
+    }
+
+    .category-title {
+        color: #333;
+        /* Dark grey */
+        margin-bottom: 10px;
+    }
+
+    .category-table {
+        width: auto;
+        /* Adjust width dynamically */
+        margin: 0 auto;
+        /* Center the table */
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .category-table th,
+    .category-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        /* Adjusted padding */
+        text-align: left;
+    }
+
+    .category-table th {
+        background-color: #f2f2f2;
+        /* Light grey */
+    }
+
+    .edit-btn,
+    .delete-btn {
+        background-color: orange;
+        /* Blue */
+        color: #fff;
+        /* White text */
+        border: none;
+        padding: 8px 16px;
+        font-size: 14px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 5px;
+        /* Adjust spacing between buttons */
+    }
+
+    .edit-btn:hover,
+    .delete-btn:hover {
+        background-color: orange;
+        /* Darker blue on hover */
+    }
+</style>
+
+<body>
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-secondary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar start -->
+    <div class="container-fluid fixed-top">
+        <div class="topbar bg-secondary d-none d-lg-block">
+            <div class="d-flex justify-content-between">
+                <div class="top-info ps-2">
+                    <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-danger"></i> <a href="#"
+                            class="text-white">{{selected_location}}</a></small>
+                    <small class="me-3"><i class="fas fa-envelope me-2 text-danger"></i><a href="#"
+                            class="text-white">{{email}}</a></small>
+                </div>
+                <div class="top-link pe-2">
+                    <a href="#" class="text-white">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+        <div class="container px-0">
+            <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                <a href="/" class="navbar-brand" style="display: flex; align-items: center;">
+                    <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo"
+                        style="height: 50px; margin-left: -10px;">
+                    <h1 class="text-secondary display-6" style="margin-left: 10px; margin-bottom: -1px;">Pooja aur
+                        Pujaree</h1>
+                </a>
+
+                <a href="/" class="my-auto">
+                    <i class="fas fa-sign-out-alt fa-2x"></i>
+                </a>
+        </div>
+    </div>
+
+
+    <!-- Modal Search End -->
+
+    <body>
+
+        <!-- Buttons of admin -->
+        <div class="category-buttons">
+            <button class="category-btn" onclick="toggleSection('puja-samagri')">Puja Samagri</button>
+            <button class="category-btn" onclick="toggleSection('service-details')">Puja Services</button>
+            <button class="category-btn" onclick="toggleSection('pandit-details')">Pandit Details</button>
+            <a href="/acceptpuja" class="category-btn">Pandit Accept</a>
+            <button class="category-btn" onclick="toggleSection('temples-details')">Temples</button>
+            <button class="category-btn" onclick="toggleSection('users')">Users</button>
+            <button class="category-btn" onclick="toggleSection('orders')">Orders</button>
+            <button class="category-btn" onclick="toggleSection('prasadam-details')">Prasadam</button>
+            <button class="category-btn" onclick="toggleSection('Location-details')">Add Location</button>
+
+        </div>
+
+        <!-- Puja Samagri -->
+
+        <div id="puja-samagri" class="category-content" style="display: none;">
+            <h2 class="category-title">Puja Samagri</h2>
+            <button type="button" class="edit-btn" onclick="toggleFormVisibility()" style="margin-bottom: -10px;">Add
+                new Puja Samagri</button>
+            <form action="/add" id="addItemForm" style="display: none; margin-top: 20px; margin-bottom: 20px;"
+                method="post" enctype="multipart/form-data">
+                <input type="text" name="name" placeholder="Enter Item Name" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="number" name="price" placeholder="Enter Item Price" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="text" name="description" placeholder="Enter Description" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <div class="field" style="margin-bottom: 10px;">
+                    <label for="file">Upload Samagri Image</label>
+                    <input id="file" type="file" name="image" accept="image/*" required />
+                </div>
+                <button type="submit" class="edit-btn" style="margin-bottom: -10px;">Add Item</button>
+            </form>
+            <table class="category-table" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>Puja Samagri Name</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in l %}
+                    <form action="/updateSamagri/{{i[0]}}" method="POST">
+                        <tr data-id="{{ loop.index }}">
+                            <td><input type="text" name="name" value="{{i[1]}}" style="padding: 5px;"></td>
+                            <td><input type="text" name="price" value="{{i[2]}}" style="padding: 5px;"></td>
+                            <td><input type="text" name="description" value="{{i[3]}}" style="padding: 5px;"></td>
+                            <td>
+                                <button type="submit" class="edit-btn" style="margin-bottom: 5px;">Update</button>
+                    </form>
+                    <a href="/p_delete/{{i[0]}}"><button class="edit-btn"
+                            style="margin-bottom: 5px;">Delete</button></a>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Puja Services -->
+
+        <div id="service-details" class="category-content" style="display: none;">
+            <h2 class="category-title">Puja Services</h2>
+            <button type="button" class="edit-btn" id="toggleServiceFormBtn" style="margin-bottom: -10px;">Add new Puja
+                Service</button>
+            <form action="/addService" id="addServiceForm" style="display: none; margin-top: 20px; margin-bottom: 20px;"
+                method="post" enctype="multipart/form-data">
+                <input type="text" name="name" placeholder="Service Name" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="number" name="price" placeholder="Service Price" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="text" name="description" placeholder="Description" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <div class="field" style="margin-bottom: 10px;">
+                    <label for="file">File</label>
+                    <input id="file" type="file" name="image" accept="image/*" required />
+                </div>
+                <button type="submit" class="edit-btn" style="margin-bottom: -10px;">Add Service</button>
+            </form>
+            <table class="category-table" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>Puja Service Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for j in k %}
+                    <form action="/UpdateService/{{j[0]}}" method="POST">
+                        <tr data-id="{{ loop.index }}">
+                            <td><input type="text" name="name" value="{{j[1]}}" style="padding: 5px;"></td>
+                            <td><input type="text" name="description" value="{{j[2]}}" style="padding: 5px;"></td>
+                            <td><input type="text" name="price" value="{{j[3]}}" style="padding: 5px;"></td>
+                            <td>
+                                <button type="submit" class="edit-btn" style="margin-bottom: 5px;">Update</button>
+                    </form>
+                    <a href="/deleteService/{{j[0]}}"><button class="edit-btn"
+                            style="margin-bottom: 5px;">Delete</button></a>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pandit details -->
+
+        <div id="pandit-details" class="category-content" style="display: none;">
+            <h2 class="category-title">Pandit Details</h2>
+            <button type="button" class="edit-btn" id="togglePanditFormBtn">Add new Pandit</button>
+            <form action="/addPandit" id="addPanditForm" style="display: none; margin-top: 20px; margin-bottom: 20px;"
+                method="post">
+                <input type="text" name="name" placeholder="Enter Pandit Name" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="number" name="age" placeholder="Enter Pandit Age" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="text" name="location" placeholder="Enter Pandit Location" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="text" name="contact" placeholder="Enter Pandit Contact" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="email" name="email" placeholder="Enter Pandit Email" required
+                    style="margin-bottom: 10px; padding: 5px;">
+                <button type="submit" class="edit-btn" style="margin-bottom: -10px;">Add Pandit</button>
+            </form>
+            <table class="category-table" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>Pandit Name</th>
+                        <th>Age</th>
+                        <th>Location</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Assuming server-side templating -->
+                    {% for j in pandit %}
+                    <form action="/updatePandit/{{j[0]}}" method="post">
+                        <tr data-id="{{ loop.index }}">
+                            <td><input type="text" name="name" value="{{ j[1] }}" style="padding: 5px;"></td>
+                            <td><input type="number" name="age" value="{{ j[2] }}" style="padding: 5px;"></td>
+                            <td><input type="text" name="location" value="{{ j[3] }}" style="padding: 5px;"></td>
+                            <td><input type="tele" name="phno" value="{{ j[4] }}" style="padding: 5px;"></td>
+                            <td><input type="email" name="email" value="{{ j[5] }}" style="padding: 5px;"></td>
+                            <td>
+                                <button type="submit" class="edit-btn" style="margin-bottom: 5px;">Update</button>
+                    </form>
+                    <a href="/pandit_delete/{{ j[0] }}"><button class="edit-btn"
+                            style="margin-bottom: 5px;">Delete</button></a>
+                    </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+                <tbody>
+                    {% for i in apandit %}
+                    <form action="/updatePandit/{{i[0]}}" method="post">
+                        <tr data-id="{{ loop.index }}">
+                            <td><input type="text" name="name" value="{{ i[1] }}" style="padding: 5px;"></td>
+                            <td><input type="number" name="age" value="{{ i[2] }}" style="padding: 5px;"></td>
+                            <td><input type="text" name="location" value="{{ i[3] }}" style="padding: 5px;"></td>
+                            <td><input type="tele" name="contact" value="{{ i[4] }}" style="padding: 5px;"></td>
+                            <td><input type="email" name="email" value="{{ i[5] }}" style="padding: 5px;"></td>
+                            <td>
+                                <button type="submit" class="edit-btn" style="margin-bottom: 5px;">Update</button>
+                    </form>
+                    <a href="/pandit_delete/{{ i[0] }}"><button class="edit-btn"
+                            style="margin-bottom: 5px;">Delete</button></a>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const panditDetailsDiv = document.getElementById('pandit-details');
+                const togglePanditFormBtn = document.getElementById('togglePanditFormBtn');
+                const addPanditForm = document.getElementById('addPanditForm');
+
+                // Ensure the form is closed on page load
+                addPanditForm.style.display = 'none';
+                togglePanditFormBtn.textContent = 'Add new Pandit';
+
+                togglePanditFormBtn.addEventListener('click', function () {
+                    if (addPanditForm.style.display === 'none') {
+                        addPanditForm.style.display = 'block';
+                        togglePanditFormBtn.textContent = 'Close';
+                    } else {
+                        addPanditForm.style.display = 'none';
+                        togglePanditFormBtn.textContent = 'Add new Pandit';
+                    }
+                });
+
+                // Display the pandit details div initially
+
+            });
+        </script>
+
+
+        <!-- Users -->
+
+        <div id="users" class="category-content" style="display: none;">
+            <h2 class="category-title">Users</h2>
+            <table class="category-table" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for k in user %}
+                    <tr>
+                        <form method="POST" action="/updateUser/{{ k[0] }}">
+                            <td><input type="text" value="{{ k[1] }}" name="name" style="padding: 5px;"></td>
+                            <td><input type="email" value="{{ k[2] }}" name="email" style="padding: 5px;"></td>
+                            <td><input type="text" value="{{ k[3] }}" name="phno" style="padding: 5px;"></td>
+                            <td>
+                                <div style="display: flex;">
+                                    <button type="submit" class="edit-btn" style="margin-bottom: 5px;">Update</button>
+                        </form>
+                        <a href="/deleteUser/{{ k[0] }}" style="margin-left: 10px;">
+                            <button class="edit-btn" style="margin-bottom: 5px;">Delete</button>
+                        </a>
+        </div>
+        </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        </div>
+
+        <!-- temples  -->
+
+        <div id="temples-details" class="category-content" style="display: none;">
+            <h2 class="category-title">Temples</h2>
+            <button class="edit-btn" onclick="toggleFormTemple()" id="toggleTempleFormBtn"
+                style="margin-bottom: -10px;">Add Temple</button>
+            <form id="addTempleForm" style="display: none; margin: 20px; margin-bottom: 20px;" action="/addTemples"
+                method="post" enctype="multipart/form-data">
+                <div style="display: flex; align-items: center; margin-bottom: 10px;margin-left: 530px;">
+                    <input type="text" name="t_name" placeholder="Temple Name" required
+                        style="margin-right: 10px; padding: 5px;">
+                    <div class="field" style="margin-bottom: 10px;">
+                        <label for="file1">Temple Image</label>
+                        <input id="file1" type="file" name="timage" accept="image/*" required />
+                    </div>
+                </div>
+                <div class="puja-fields">
+                    <div class="puja-field" style="margin-bottom: 10px;">
+                        <button type="button" class="add-puja-field"
+                            style="margin-top: 10px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">+</button>
+                        <input type="text" name="p_name" placeholder="Puja Name" required
+                            style="margin-bottom: 10px; padding: 5px;">
+                        <input type="text" name="location" placeholder="Location"
+                            style="margin-bottom: 10px; padding: 5px;">
+                        <input type="number" name="price" placeholder="Price" required
+                            style="margin-bottom: 10px; padding: 5px;">
+                        <input type="text" name="description" placeholder="Description" required
+                            style="margin-bottom: 10px; padding: 5px;">
+                        <div class="field" style="margin-bottom: 10px;">
+                            <label for="file2">Puja Image</label>
+                            <input id="file2" type="file" name="pimage" accept="image/*" required />
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="edit-btn" style="margin-top: 10px;">Add Temple</button>
+            </form>
+
+            <table class="category-table" style="margin-top: 20px; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>Temple Name</th>
+                        <th>Puja Name</th>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for temple in temples %}
+                    <tr>
+                        <form action="/updateTemple/{{ temple['_id'] }}/{{ temple['p_name'] }}" method="POST">
+                            <td><input type="text" name="t_name" value="{{ temple['t_name'] }}" style="padding:5px">
+                            </td>
+                            <td><input type="text" name="p_name" value="{{ temple['p_name'] }}" style="padding:5px">
+                            </td>
+                            <td><input type="text" name="location" value="{{ temple['location'] }}" style="padding:5px">
+                            </td>
+                            <td><input type="number" name="price" value="{{ temple['price'] }}" style="padding:5px">
+                            </td>
+                            <td><input type="text" name="description" value="{{ temple['description'] }}"
+                                    style="padding:5px"></td>
+
+                            <td style="display: flex;">
+                                <button type="submit" class="edit-btn" style="margin-bottom: 5px;">Update</button>
+                        </form>
+                        <a href="/deletePuja/{{ temple['_id'] }}/{{ temple['p_name'] }}">
+                            <button class="edit-btn" style="margin-bottom: 5px;">Delete</button>
+                        </a>
+                        </td>
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const addPujaFieldBtn = document.querySelector('.add-puja-field');
+                const pujaFieldsContainer = document.querySelector('.puja-fields');
+
+                addPujaFieldBtn.addEventListener('click', function () {
+                    addPujaField();
+                });
+
+                function addPujaField() {
+                    const newPujaField = document.createElement('div');
+                    newPujaField.classList.add('puja-field');
+                    newPujaField.style.marginBottom = '10px';
+                    newPujaField.innerHTML = `
+                        <button type="button" class="add-puja-field-child" style="margin-top: 10px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">+</button>
+                        <button type="button" class="remove-puja-field" style="margin-top: 10px; padding: 8px 16px; background-color: red; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">-</button>
+                        <input type="text" name="p_name" placeholder="Puja Name" required style="margin-bottom: 10px; padding: 5px;">
+                        <input type="text" name="location" placeholder="Location" style="margin-bottom: 10px; padding: 5px;">
+                        <input type="number" name="price" placeholder="Price" required style="margin-bottom: 10px; padding: 5px;">
+                        <input type="text" name="description" placeholder="Description" required style="margin-bottom: 10px; padding: 5px;">
+                        <div class="field" style="margin-bottom: 10px;">
+                            <label for="file">Puja Image</label>
+                            <input type="file" name="pimage" accept="image/*" required />
+                        </div>
+                        `;
+                    pujaFieldsContainer.appendChild(newPujaField);
+
+                    const removePujaFieldBtn = newPujaField.querySelector('.remove-puja-field');
+                    removePujaFieldBtn.addEventListener('click', function () {
+                        pujaFieldsContainer.removeChild(newPujaField);
+                    });
+
+                    const addPujaFieldBtns = document.querySelectorAll('.add-puja-field-child');
+                    addPujaFieldBtns.forEach(function (button) {
+                        button.addEventListener('click', addPujaField);
+                    });
+                }
+            });
+        </script>
+
+        <!-- prasadam -->
+
+        <div id="prasadam-details" class="category-content" style="display: none;">
+            <h2 class="category-title">Prasadam</h2>
+            <button class="edit-btn" onclick="toggleFormPrasadam()" id="togglePrasadamFormBtn"
+                style="margin-bottom: -10px;">Add Prasadam</button>
+            <form id="addPrasadamForm" style="display: none; margin: 20px; margin-bottom: 20px;" action="/addPrasadam"
+                method="post">
+                <div style="display: flex; align-items: center; margin-bottom: 10px;margin-left: 530px;">
+                    <input type="text" name="MandirName" placeholder="Mandir Name" required
+                        style="margin-left: 160px; padding: 5px;">
+                </div>
+                <div class="prasadam-fields">
+                    <div class="prasadam-field" style="margin-bottom: 10px;">
+                        <button type="button" class="add-prasadam-field"
+                            style="margin-top: 10px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">+</button>
+                        <input type="text" name="PrasadamName" placeholder="Prasadam Name"
+                            style="margin-bottom: 10px; padding: 5px;">
+                        <input type="number" name="price" placeholder="Price" required
+                            style="margin-bottom: 10px; padding: 5px;">
+                        <input type="text" name="description" placeholder="Description" required
+                            style="margin-bottom: 10px; padding: 5px;">
+                    </div>
+                </div>
+                <button type="submit" class="edit-btn" style="margin-top: 10px;">Add Prasadam</button>
+            </form>
+            <table class="category-table" style="margin-top: 20px; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>Mandir Name</th>
+                        <th>Prasadam Name</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for k in prasad %}
+                    <tr>
+                        <form action="/updatePrasadam/{{ k['_id'] }}/{{ k['prasadam_name'] }}" method="POST">
+                            <td><input type="text" name="MandirName" value="{{ k['mandir_name'] }}" style="padding:5px">
+                            </td>
+                            <td><input type="text" name="prasadamname" value="{{ k['prasadam_name'] }}"
+                                    style="padding:5px"></td>
+                            <td><input type="number" name="price" value="{{ k['price'] }}" style="padding:5px">
+                            </td>
+                            <td><input type="text" name="description" value="{{ k['description'] }}"
+                                    style="padding:5px"></td>
+                            <td style="display: flex;">
+                                <button type="submit" class="edit-btn" style="margin-bottom: 5px;">Update</button>
+                        </form>
+                        <a href="/deletePrasadam/{{ k['_id'] }}/{{ k['prasadam_name'] }}">
+                            <button class="edit-btn" type="submit" style="margin-bottom: 5px;">Delete</button>
+                        </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            function toggleFormPrasadam() {
+                var form = document.getElementById("addPrasadamForm");
+                var toggleButton = document.getElementById("togglePrasadamFormBtn");
+                if (form.style.display === "none") {
+                    form.style.display = "block";
+                    toggleButton.textContent = "Close";
+                } else {
+                    form.style.display = "none";
+                    toggleButton.textContent = "Add Prasadam";
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const addPrasadamFieldBtn = document.querySelector('.add-prasadam-field');
+                const prasadamFieldsContainer = document.querySelector('.prasadam-fields');
+
+                addPrasadamFieldBtn.addEventListener('click', function () {
+                    addPrasadamField();
+                });
+
+                function addPrasadamField() {
+                    const newPrasadamField = document.createElement('div');
+                    newPrasadamField.classList.add('prasadam-field');
+                    newPrasadamField.style.marginBottom = '10px';
+                    newPrasadamField.innerHTML = `
+                        <button type="button" class="add-prasadam-field-child" style="margin-top: 10px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">+</button>
+                        <button type="button" class="remove-prasadam-field" style="margin-top: 10px; padding: 8px 16px; background-color: red; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">-</button>
+                        <input type="text" name="PrasadamName" placeholder="Prasadam Name" required style="margin-bottom: 10px; padding: 5px;">
+                        <input type="number" name="price" placeholder="Price" required style="margin-bottom: 10px; padding: 5px;">
+                        <input type="text" name="description" placeholder="Description" required style="margin-bottom: 10px; padding: 5px;">
+                    `;
+                    prasadamFieldsContainer.appendChild(newPrasadamField);
+
+                    const removePrasadamFieldBtn = newPrasadamField.querySelector('.remove-prasadam-field');
+                    removePrasadamFieldBtn.addEventListener('click', function () {
+                        prasadamFieldsContainer.removeChild(newPrasadamField);
+                    });
+
+                    const addPrasadamFieldBtns = document.querySelectorAll('.add-prasadam-field-child');
+                    addPrasadamFieldBtns.forEach(function (button) {
+                        button.addEventListener('click', addPrasadamField);
+                    });
+                }
+            });
+        </script>
+
+        <div id="Location-details" class="category-content" style="display: none;">
+            <h2 class="category-title">Add Location</h2>
+            <form action="/addLocation" method="post">
+                <input type="text" name="location" placeholder="Enter Address"
+                    style="margin-bottom: 10px; padding: 5px;">
+                <input type="tele" name="name" placeholder="Enter Number" style="margin-bottom: 10px; padding: 5px;">
+                <input type="email" name="mail" placeholder="Enter Email" style="margin-bottom: 10px; padding: 5px;">
+                <input type="text" name="address" placeholder="Enter Maps Link"
+                    style="margin-bottom: 10px; padding: 5px;">
+                <button type="submit" class="edit-btn">Add</button>
+            </form>
+        </div>
+
+        <!-- banner and location -->
+        <div class="category-buttons" style="margin-top: 40px;">
+            <div class="my-auto" style="display: flex; align-items: center;">
+                <button type="button" class="category-btn" onclick="openImageDialog()">Add Banner</button>
+                <form action="/uploadbanner" method="post" enctype="multipart/form-data"
+                    style="display: flex; align-items: center; margin-left: 10px;">
+                    <input type="file" id="imageInput" name="banner" style="display: none;" accept="image/*"
+                        onchange="displayImageName(this)">
+                    <span id="imageNameSpan" style="margin-right: 10px;">No file chosen</span>
+                    <button class="category-btn" type="submit">Upload</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function openImageDialog() {
+                document.getElementById('imageInput').click();
+            }
+
+            function displayImageName(input) {
+                const fileName = input.files[0] ? input.files[0].name : 'No file chosen';
+                document.getElementById('imageNameSpan').textContent = fileName;
+            }
+        </script>
+
+        <h1 style="font-size: 2em; margin-bottom: 1em; text-align: center;">Banners</h1>
+        {% for i in ban1 %}
+        <div style="margin-bottom: 1em; text-align: center;">
+            <img src="/viewImage/{{ i }}" alt="banner" class="img-fluid w-50 rounded-top" style="
+            height: 80px;
+            width: 100%;
+            max-width: 1800px;
+            transition: transform 0.3s ease-in-out;
+            animation: scale-up 0.5s ease-in-out;
+            margin-bottom: 0.5em;">
+            <form action="/addBanner/{{i}}" method="post" style="display: inline-block; margin-bottom: 1em;">
+                <button type="submit" style="
+                padding: 0.5em 1em;
+                font-size: 1em;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+                margin-left: 10px;
+            " onmouseover="this.style.backgroundColor='#218838'"
+                    onmouseout="this.style.backgroundColor='#28a745'">Add</button>
+            </form>
+            <form action="/deleteBanner/{{i}}" method="post" style="display: inline-block; margin-bottom: 1em;">
+                <button type="submit" style="
+                padding: 0.5em 1em;
+                font-size: 1em;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+                margin-left: 10px;
+            " onmouseover="this.style.backgroundColor='#218838'"
+                    onmouseout="this.style.backgroundColor='#28a745'">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+        <h1 style="font-size: 2em; margin-bottom: 1em; text-align: center;">Locations</h1>
+        {% for i in loc_names %}
+        <div style="margin-bottom: 1em; text-align: center;">
+            <h4 style="font-size: 1.2em; margin: 0.5em 0;">Number: {{i[2]}}</h4>
+            <h4 style="font-size: 1.2em; margin: 0.5em 0;">Mail: {{i[3]}}</h4>
+            <h4 style="font-size: 1.2em; margin: 0.5em 0;">Location: {{i[4]}}</h4>
+            <form action="/addLoc/{{i[0]}}" method="post" style="display: inline-block; margin-bottom: 1em;">
+                <button type="submit" style="
+                padding: 0.5em 1em;
+                font-size: 1em;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+                margin-left: 10px;
+            " onmouseover="this.style.backgroundColor='#218838'"
+                    onmouseout="this.style.backgroundColor='#28a745'">Add</button>
+            </form>
+
+            <form action="/deleteLoc/{{i[0]}}" method="post" style="display: inline-block; margin-bottom: 1em;">
+                <button type="submit" style="
+                padding: 0.5em 1em;
+                font-size: 1em;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+                margin-left: 10px;
+            " onmouseover="this.style.backgroundColor='#218838'"
+                    onmouseout="this.style.backgroundColor='#28a745'">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+        <style>
+            @keyframes scale-up {
+                0% {
+                    transform: scale(0.95);
+                }
+
+                100% {
+                    transform: scale(1);
+                }
+            }
+        </style>
+
+
+
+        <!-- <div id="orders" class="category-content">
+                <h2 class="category-title">Orders</h2>
+                <table class="category-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User Name</th>
+                            <th>Order Date</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-id="4">
+                            <td>123456</td>
+                            <td>User ABC</td>
+                            <td>2022-01-01</td>
+                            <td>2</td>
+                            <td>
+                                <button class="edit-btn" onclick="editItem('orders', 4)">Edit</button>
+                                <button class="edit-btn" onclick="deleteItem('orders', 4)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+            <div class="container py-5">
+                <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(234, 241, 8, 0.923);">
+                    <div class="row g-4">
+                        <div class="col-lg-3">
+                            <a href="#">
+                                <h1 class="text-success mb-0">Pooja aur Pujaree</h1>
+                                <p class="text-secondary mb-0">Aapki Pooja, Hamara Wada</p>
+                            </a>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="position-relative mx-auto">
+                                <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number"
+                                    placeholder="Your Email">
+                                <button type="submit"
+                                    class="btn btn-secondary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white"
+                                    style="top: 0; right: 0;">Subscribe Now</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="d-flex justify-content-end pt-3">
+                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                        class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                        class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                                        class="fab fa-youtube"></i></a>
+                                <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i
+                                        class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-5">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-item">
+                            <h4 class="text-light mb-3">Why People Like Us!</h4>
+                            <p class="mb-4">We provide personalized and dedicated services for all your pooja needs,
+                                ensuring a seamless and spiritual experience.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex flex-column text-start footer-item">
+                            <h4 class="text-light mb-3">Shop Info</h4>
+                            <a class="btn-link" href="">About Us</a>
+                            <a class="btn-link" href="">Contact Us</a>
+                            <a class="btn-link" href="">Privacy Policy</a>
+                            <a class="btn-link" href="">Terms & Conditions</a>
+                            <a class="btn-link" href="">Return Policy</a>
+                            <a class="btn-link" href="">FAQs & Help</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex flex-column text-start footer-item">
+                            <h4 class="text-light mb-3">Account</h4>
+                            <a class="btn-link" href="">My Account</a>
+                            <a class="btn-link" href="">Shop Details</a>
+                            <a class="btn-link" href="">Shopping Cart</a>
+                            <a class="btn-link" href="">Order History</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-item">
+                            <h4 class="text-light mb-3">Contact</h4>
+                            <p>Address: HS-02, Block-F, Plot No, Sector Alpha 11, Greater Noida, Uttar Pradesh, 201306
+                            </p>
+                            <p>Email: shubhamsingh080499@gmail.com </p>
+                            <p>Phone: 9990218479</p>
+                            <p>Payment Accepted</p>
+                            <img src="{{ url_for('static', filename='img/payment.png') }}" class="img-fluid" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright bg-dark py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Pooja aur
+                                Pujaree</a>,
+                            All right reserved.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='lib/lightbox/js/lightbox.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+
+    </body>
+
+
+</html>
